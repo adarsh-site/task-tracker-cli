@@ -43,6 +43,15 @@ function getNextId(tasks) {
 // Function to add a new task
 function addTask(description) {
   const tasks = readTasks();
+  const newTask = {
+    id: getNextId(tasks),
+    description: description,
+    completed: false,
+    inProgress: false,
+  };
+  tasks.push(newTask);
+  writeTasks(tasks);
+  console.log(`${colors.green}Task added successfully! (ID: ${newTask.id})${colors.reset}`);
 }
 
 // Function to list tasks by status
