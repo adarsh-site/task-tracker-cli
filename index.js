@@ -6,7 +6,7 @@ const path = require("path");
 const tasksFilePath = path.join(__dirname, "tasks.json");
 
 // Color codes
-const colores = {
+const colors = {
   reset: "\x1b[0m",
   green: "\x1b[32m",
   red: "\x1b[31m",
@@ -52,15 +52,17 @@ function addTask(description) {
   };
   tasks.push(newTask);
   writeTasks(tasks);
-  console.log(`${colors.green}Task added successfully! (ID: ${newTask.id})${colors.reset}`);
+  console.log(
+    `${colors.green}Task added successfully! (ID: ${newTask.id})${colors.reset}`
+  );
 }
 
 // Function to update a task
 function updateTask(id, newDescription) {
   const tasks = readTasks();
-  const task = tasks.find(task => task.id === parseInt(id));
+  const task = tasks.find((task) => task.id === parseInt(id));
 
-  if(!task) {
+  if (!task) {
     console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
     return;
   }
@@ -68,29 +70,33 @@ function updateTask(id, newDescription) {
   task.description = newDescription;
   task.updatedAt = new Date();
   writeTasks(tasks);
-  console.log(`${colors.green}Task ID ${id} updated successfully!${colors.reset}`);
+  console.log(
+    `${colors.green}Task ID ${id} updated successfully!${colors.reset}`
+  );
 }
 
 // Function to delete a task
 function deleteTask(id) {
   const tasks = readTasks();
-  const newTasks = tasks.filter(task => task.id !== parseInt(id));
+  const newTasks = tasks.filter((task) => task.id !== parseInt(id));
 
-  if(newTasks.length === tasks.length) {
+  if (newTasks.length === tasks.length) {
     console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
     return;
   }
 
   writeTasks(newTasks);
-  console.log(`${colors.green}Task ID ${id} deleted successfully!${colors.reset}`);
+  console.log(
+    `${colors.green}Task ID ${id} deleted successfully!${colors.reset}`
+  );
 }
 
 // Function to mark a task as in-progress
 function markInProgress(id) {
   const tasks = readTasks();
-  const task = tasks.find(task => task.id === parseInt(id));
+  const task = tasks.find((task) => task.id === parseInt(id));
 
-  if(!task) {
+  if (!task) {
     console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
     return;
   }
@@ -98,15 +104,17 @@ function markInProgress(id) {
   task.status = "in-progress";
   task.updatedAt = new Date();
   writeTasks(tasks);
-  console.log(`${colors.yellow}Task ID ${id} marked as in-progress.${colors.reset}`);
+  console.log(
+    `${colors.yellow}Task ID ${id} marked as in-progress.${colors.reset}`
+  );
 }
 
 // Function to mark a task as done
 function markDone(id) {
   const tasks = readTasks();
-  const task = tasks.find(task => task.id === parseInt(id));
+  const task = tasks.find((task) => task.id === parseInt(id));
 
-  if(!task) {
+  if (!task) {
     console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
     return;
   }
@@ -126,21 +134,19 @@ function listTasks(status) {
     if (status.toLowerCase() === "done") {
       filteredTasks = tasks.filter((tasks) => task.status === "done");
     } else if (status.toLowerCase() === "todo") {
-      filteredTasks = tasks.filter(
-        (tasks) => task.status === "todo"
-      );
+      filteredTasks = tasks.filter((tasks) => task.status === "todo");
     } else if (status.toLowerCase() === "in-progress") {
       filteredTasks = tasks.filter((task) => task.status === "in-progress");
     } else {
       console.log(
-        `${colores.red}Invalid status. Use 'done', 'todo', or 'in-progress'.${colors.reset}`
+        `${colors.red}Invalid status. Use 'done', 'todo', or 'in-progress'.${colors.reset}`
       );
       return;
     }
   }
 
   if (filteredTasks.length === 0) {
-    console.log(`${colores.yellow}No tasks found.${colors.reset}`);
+    console.log(`${colors.yellow}No tasks found.${colors.reset}`);
     return;
   }
 
@@ -160,3 +166,55 @@ function listTasks(status) {
   });
 }
 
+// Command-line interface login
+const args = process.argv.slice(2);
+if (args[0] === "add") {
+  const taskDescription = args.slice(1).join(" ");
+
+  if (!taskDescription) {
+    console.log(
+      `${colors.red}Please provide a task description.${colors.reset}`
+    );
+  } else {
+    addTask(taskDescription);
+  }
+} else if (args[0] === "update") {
+  const id = args[1];
+  const newDescription = args.slice(2).join(" ");
+  if (!id || !newDescription) {
+    console.log(
+      `${colors.red}Please provide a task ID and new description.${colors.reset}`
+    );
+  } else {
+    updateTask(id, newDescription);
+  }
+} else if (args[0] === "delete") {
+  const id = args[1];
+
+  if (!id) {
+    console.log(`${colors.red}Please provide a task ID.${colors.reset}`);
+  } else {
+    deleteTask(id);
+  }
+} else if (args[0] === "mark-in-progress") {
+  const id = args[1];
+
+  if (!id) {
+    console.log(`${colors.red}Please provide a task ID.${colors.reset}`);
+  } else {
+    markInProgress(id);
+  }
+} else if (args[0] === "mark-done") {
+  const id = args[1];
+
+  if (!id) {
+    console.log(`${colors.red}Please provide a task ID.${colors.reset}`);
+  } else {
+    markDone(id);
+  }
+} else if (args[0] === "list") {
+  const status = args[1]; // "done", "todo", "in-progress" (optional)
+  listTasks(status);
+} else if (args[0] === "help") {
+  
+}
