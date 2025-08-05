@@ -85,6 +85,22 @@ function deleteTask(id) {
   console.log(`${colors.green}Task ID ${id} deleted successfully!${colors.reset}`);
 }
 
+// Function to mark a task as in-progress
+function markInProgress(id) {
+  const tasks = readTasks();
+  const task = tasks.find(task => task.id === parseInt(id));
+
+  if(!task) {
+    console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
+    return;
+  }
+
+  task.status = "in-progress";
+  task.updatedAt = new Date();
+  writeTasks(tasks);
+  console.log(`${colors.yellow}Task ID ${id} marked as in-progress.${colors.reset}`);
+}
+
 // Function to list tasks by status
 function listTasks(status) {
   const tasks = readTasks();
