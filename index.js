@@ -24,7 +24,8 @@ function readTasks() {
 }
 
 // Function to write tasks to the JSON file
-function writeTasks() {
+function writeTasks(tasks) {
+  tasks.sort((a, b) => a.id - b.id);
   fs.writeFileSync(tasksFilePath, JSON.stringify(tasks, null, 2), "utf8");
 }
 
@@ -130,11 +131,11 @@ function listTasks(status) {
   const tasks = readTasks();
   let filteredTasks = tasks;
 
-  if (!status) {
+  if (status) {
     if (status.toLowerCase() === "done") {
-      filteredTasks = tasks.filter((tasks) => task.status === "done");
+      filteredTasks = tasks.filter((task) => task.status === "done");
     } else if (status.toLowerCase() === "todo") {
-      filteredTasks = tasks.filter((tasks) => task.status === "todo");
+      filteredTasks = tasks.filter((task) => task.status === "todo");
     } else if (status.toLowerCase() === "in-progress") {
       filteredTasks = tasks.filter((task) => task.status === "in-progress");
     } else {
@@ -166,7 +167,7 @@ function listTasks(status) {
   });
 }
 
-// Command-line interface login
+// Command-line interface logic
 const args = process.argv.slice(2);
 if (args[0] === "add") {
   const taskDescription = args.slice(1).join(" ");
@@ -216,5 +217,13 @@ if (args[0] === "add") {
   const status = args[1]; // "done", "todo", "in-progress" (optional)
   listTasks(status);
 } else if (args[0] === "help") {
+  console.log(`${colors.cyan}Usage: task-cli <command> [arguments]${colors.reset}`);
+  console.log(`${colors.cyan}Commands:${colors.reset}`);
+  console.log(`${colors.yellow} add <task description>           - Add a new task${colors.reset}`);
+  console.log(`${colors.yellow} update <id> <new description>    - Update a task by ID${colors.reset}`);
+  console.log(`${colors.yellow} delete <id>                      - Delete a task by ID${colors.reset}`);
+  console.log(`${colors.yellow} mark-in-progress <id>            - Mark a task as in-progress by ID${colors.reset}`);
+  console.log(`${colors.yellow} mark-done <id>                   - Mark a task as done by ID${colors.reset}`);
+  console.log(`${colors.yellow} list [status]                    - List tasks (status: done, todo, in-progress)${colors.reset}`);
   
 }

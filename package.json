@@ -12,14 +12,17 @@
     "type": "git",
     "url": "git+https://github.com/adarsh-site/task-tracker-cli.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "cli",
+    "task"
+  ],
+  "author": "adarsh",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/adarsh-site/task-tracker-cli/issues"
   },
   "homepage": "https://github.com/adarsh-site/task-tracker-cli#readme",
-  "description": "",
+  "description": "Simple task tracker cli",
   "dependencies": {
   }
 }
