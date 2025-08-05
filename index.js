@@ -46,12 +46,29 @@ function addTask(description) {
   const newTask = {
     id: getNextId(tasks),
     description: description,
-    completed: false,
-    inProgress: false,
+    status: "todo",
+    createdAt: new Date(),
+    updatedAt: null,
   };
   tasks.push(newTask);
   writeTasks(tasks);
   console.log(`${colors.green}Task added successfully! (ID: ${newTask.id})${colors.reset}`);
+}
+
+// Function to update a task
+function updateTask(id, newDescription) {
+  const tasks = readTasks();
+  const task = tasks.find(task => task.id === parseInt(id));
+
+  if(!task) {
+    console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
+    return;
+  }
+
+  task.description = newDescription;
+  task.updatedAt = new Date();
+  writeTasks(tasks);
+  console.log(`${colors.green}Task ID ${id} updated successfully!${colors.reset}`);
 }
 
 // Function to list tasks by status
@@ -61,13 +78,13 @@ function listTasks(status) {
 
   if (!status) {
     if (status.toLowerCase() === "done") {
-      filteredTasks = tasks.filter((tasks) => task.completed);
+      filteredTasks = tasks.filter((tasks) => task.status === "done");
     } else if (status.toLowerCase() === "todo") {
       filteredTasks = tasks.filter(
-        (tasks) => !task.completed && !task.inProgress
+        (tasks) => task.status === "todo"
       );
     } else if (status.toLowerCase() === "in-progress") {
-      filteredTasks = tasks.filter((task) => task.inProgress);
+      filteredTasks = tasks.filter((task) => task.status === "in-progress");
     } else {
       console.log(
         `${colores.red}Invalid status. Use 'done', 'todo', or 'in-progress'.${colors.reset}`
@@ -87,9 +104,9 @@ function listTasks(status) {
   filteredTasks.forEach((task) => {
     console.log(
       `${task.id}. ${task.description} [${
-        task.completed
+        task.status === "done"
           ? colors.green + "Done"
-          : task.inProgress
+          : task.status === "in-progress"
           ? colors.yellow + "In-progress"
           : colors.red + "To-do"
       }${colors.reset}]`
