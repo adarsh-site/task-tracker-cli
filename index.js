@@ -71,6 +71,20 @@ function updateTask(id, newDescription) {
   console.log(`${colors.green}Task ID ${id} updated successfully!${colors.reset}`);
 }
 
+// Function to delete a task
+function deleteTask(id) {
+  const tasks = readTasks();
+  const newTasks = tasks.filter(task => task.id !== parseInt(id));
+
+  if(newTasks.length === tasks.length) {
+    console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
+    return;
+  }
+
+  writeTasks(newTasks);
+  console.log(`${colors.green}Task ID ${id} deleted successfully!${colors.reset}`);
+}
+
 // Function to list tasks by status
 function listTasks(status) {
   const tasks = readTasks();
