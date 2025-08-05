@@ -216,7 +216,7 @@ if (args[0] === "add") {
 } else if (args[0] === "list") {
   const status = args[1]; // "done", "todo", "in-progress" (optional)
   listTasks(status);
-} else if (args[0] === "help") {
+} else {
   console.log(`${colors.cyan}Usage: task-cli <command> [arguments]${colors.reset}`);
   console.log(`${colors.cyan}Commands:${colors.reset}`);
   console.log(`${colors.yellow} add <task description>           - Add a new task${colors.reset}`);
@@ -225,5 +225,4 @@ if (args[0] === "add") {
   console.log(`${colors.yellow} mark-in-progress <id>            - Mark a task as in-progress by ID${colors.reset}`);
   console.log(`${colors.yellow} mark-done <id>                   - Mark a task as done by ID${colors.reset}`);
   console.log(`${colors.yellow} list [status]                    - List tasks (status: done, todo, in-progress)${colors.reset}`);
-  
 }
